@@ -1,4 +1,18 @@
-## 코딩테스트 연습문제
+# How to make directory?
 
-- 문제 출처: [programmers](https://programmers.co.kr/learn/challenges)
-- 사용언어: Python3
+```
+./ec <desired_path_with_title>
+````
+
+## Example
+
+```
+./ec acmipc/test
+./ec platform_name/problem_name
+./ec platform/한글가능
+./ec platform/띄어쓰기는\ 이렇게
+```
+
+# How to modify default contents?
+
+- Modify `README.md, main.py` from `.sample`
