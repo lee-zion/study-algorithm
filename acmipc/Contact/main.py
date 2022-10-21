@@ -1,36 +1,26 @@
 # EM Pattern = (100+1+ | 01)+
-# 합집합의 반복
-# 합집합
-# 10 (0..0) (1..1) | 01
-# min: 1001 01 01 1001
-# max: 10 0..0 1..1 01
-#      01 10 0..0 1..1
-import os
-
-def readFile(filename):
-    script_dir = os.path.dirname(__file__)
-    path_to_file = os.path.join(script_dir, filename)
-    file = open(path_to_file, 'r')
-    ret = file.readlines()
-    for line in range(len(ret)):
-        ret[line] = ret[line].strip()
-    file.close()
-    return ret
-
-def main(*args, **kwargs):
-    file_raw = readFile("input.txt")
-    num_cases = file_raw[0]
+# basis vector of vega space = { 01, 100+1+ }
+# -> check if string can be parsed to 01 or 100+1+
+import re
+import sys
+def main():
+    num_cases = int(sys.stdin.readline())
     cases_input = []
-    for i in range(int(num_cases)):
-        cases_input.append(file_raw[i+1])
-    print(cases_input)
+    for i in range(num_cases):
+        cases_input.append(sys.stdin.readline().strip())
+    cases_answer = [0]*num_cases
 
-    for case_input in cases_input:
-        # if pattern matches with
-        # 10 0..0 1..1 01
-        # or
-        # 0110 0..0 1..1
-        case_input
+    for i, case_input in enumerate(cases_input):
+        if len(case_input) < 6:
+            cases_answer[i] = 'NO'
+            continue
+        pattern='(100+1+|01)+'
+        if re.fullmatch(pattern, case_input):
+            cases_answer[i] = 'YES'
+        else:
+            cases_answer[i] = 'NO'
+    print(cases_answer)
+    return
 
 if __name__ == '__main__':
     main()
