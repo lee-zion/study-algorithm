@@ -22,8 +22,12 @@ def is_prime(n):
 def main():
     answer = 0
     [A, B] = list(map(int, sys.stdin.readline().split(" ")))
+    nums = [False]*(B+1)
+    for i in range(1, B+1):
+        if is_prime(i):
+            nums[i] = True
     for i in range(A, B+1):
-        if is_prime(num_prime(i)):
+        if nums[num_prime(i)]:
             answer += 1
     print(answer)
 if __name__ == "__main__":
