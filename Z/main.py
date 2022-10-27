@@ -4,6 +4,9 @@ def main():
     offset = 0
     if not (r > 2**n or c > 2**n):
         while (n > 1):
+            if n > 12:
+                print(0)
+                break
             det, adder = 2**(n-1), 4**(n-1)
             if r < det:
                 if c < det:
@@ -23,5 +26,7 @@ def main():
             if n == 1:
                 offset += 2*r + c
         print(offset)
+    else:
+        print(0)
 if __name__ == "__main__":
     main()
