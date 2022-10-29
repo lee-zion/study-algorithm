@@ -1,10 +1,10 @@
-# [문제제목](문제HTTP링크)
+# [title](#link)
 
 문제 설명을 이곳에 입력
 
 이미지를 추가하려면 이미지 파일 추가 후 아래와 같이 사용
 
-![image_title](<path_to_file>)
+![image_한글 테스트](<path_to_file>)
 
 중앙 정렬을 하려면 html 태그를 사용
 

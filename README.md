@@ -1,19 +1,16 @@
 # How to make directory?
 
 ```
-./ec <desired_path_with_title>
+./ec 문제제목 [문제링크=#link]
 ````
 
 ## Example
 
 ```
-./ec test
-./ec problem_name
-./ec 한글가능
-./ec 띄어쓰기는\ 이렇게
-./ec '이렇게도 띄어쓰기 가능'
+./ec AB https://www.acmicpc.net/problem/1008 # A/B 입력시 A 디렉토리 밑의 B 디렉토리 밑에 샘플 생성
+./ec 'DFS와 BFS'
+./ec 'DFS와 BFS' https://www.acmicpc.net/problem/1260
 ```
 
-# How to modify default contents?
-
-- Modify `README.md, main.py, input.txt` and `test.py` in `.sample` directory
+# 샘플 수정 방법
+- `.sample` 디렉토리 내 `README.md, main.py, input.txt, test.py` 수정
