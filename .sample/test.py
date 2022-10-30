@@ -8,13 +8,14 @@ def read_file(filename):
     file.close()
     return ret
 
-def main(*args):
+def main(input):
     return True
 
 class TestCases(unittest.TestCase):
     def test_input_txt(self):
-        answer = read_file('<path_to_file>')
-        self.assertEqual(main(), answer)
+        input = read_file('problem title/input.txt')
+        answer = read_file('problem title/output.txt')
+        self.assertEqual(main(input), answer)
 
 
 if __name__ == '__main__':
