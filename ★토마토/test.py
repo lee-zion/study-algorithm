@@ -42,7 +42,7 @@ def main(input):
     q = deque([])
     for col in range(COL_MAX):
         for row in range(ROW_MAX):
-            if graph[row][col] != -1:
+            if graph[row][col] == 0:
                 is_solvable = False
                 for i in range(4):
                     nx, ny = row + dx[i], col + dy[i]
