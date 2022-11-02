@@ -1,13 +1,17 @@
 #!/bin/bash
 
 mkfile() {
-    mkdir -p -- "$1"
-    cp .sample/* "$1"
-    sed -i "s,title,$1,g" "$1/"README.md
-    if [[ $# > 1 ]];
-    then
-        sed -i "s~#link~$2~g" "$1/"README.md
-    fi
+    array=()
+    printf "%s" ""
+    while read line ; do
+        array+=("$line")
+    done < <(python3 ./get_title.py "$1")
+    mkdir -p -- "${array[0]}" &&
+    cp .sample/* "${array[0]}" &&
+    python3 ./get_content.py "$1"
+    
+    # remove input/output path in test.py
+    sed -i "s,problem_title,${array[0]},g" "${array[0]}/"test.py
 }
 
 mkfile "${@}"

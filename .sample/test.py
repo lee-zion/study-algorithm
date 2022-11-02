@@ -13,8 +13,8 @@ def main(input):
 
 class TestCases(unittest.TestCase):
     def test_input_txt(self):
-        input = read_file('problem title/input.txt')
-        answer = read_file('problem title/output.txt')
+        input = read_file('problem_title/input.txt')
+        answer = read_file('problem_title/output.txt')
         self.assertEqual(main(input), answer)
 
 
