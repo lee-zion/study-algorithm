@@ -22,14 +22,16 @@ def main(args):
         content = BeautifulSoup(content_found, 'html.parser')
     title = " ".join(content.title.getText().split(" ")[1:])
     description = content.find('div', { "id" : "problem_description" }).getText().strip()
+    in_cond = content.find('section', { "id" : "input" }).getText().strip()
+    out_cond = content.find('section', { "id" : "output" }).getText().strip()
     limits = content.find('div', { "id" : "problem_limit" }).getText().strip()
     samples = content.find_all(class_ = "sampledata")
     examples = ""
     for i, sample in enumerate(samples):
         examples += """## 예제 {iotext} {idx}\n\n```\n{data}\n```\n\n""".format(iotext="입력" if i%2 == 0 else "출력", idx=int(i/2)+1, data=sample.getText().strip())
 
-    document = """# [{title}]({link})\n\n{description}\n\n# 제한조건\n\n{limits}\n\n{examples}""".format(
-        title=title, description=description, link=link, limits=limits, examples=examples
+    document = """# [{title}]({link})\n\n{description}\n\n# {in_cond}\n\n# {out_cond}\n\n# 제한조건\n\n{limits}\n\n{examples}""".format(
+        title=title, description=description, link=link, in_cond=in_cond, out_cond=out_cond, limits=limits, examples=examples
     )
 
     file = open(f"{title}/README.md", "a")
