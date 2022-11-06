@@ -8,7 +8,8 @@ def read_file(filename):
     file.close()
     return ret
 
-def main(n, r, c):
+def main(input):
+    [n, r, c] = list(map(int, input[0].split(" ")))
     offset = 0
     while (n > 1):
         det, adder = 2**(n-1), 4**(n-1)
@@ -33,11 +34,16 @@ def main(n, r, c):
 
 class TestCases(unittest.TestCase):
     def test_input_txt(self):
-        data = read_file('acmipc/Z/input.txt')
-        for d in data:
-            [n, r, c, answer] = list(map(int, d.split(" ")))
-            print(n, r, c, answer)
-            self.assertEqual(main(n, r, c), answer)
+        input = read_file('Z/input.txt')
+        answer = read_file('Z/output.txt')
+        self.assertEqual(main(input), answer)
+
+        # input = read_file('Z/input.txt')
+        # answer = read_file('Z/input.txt')
+        # for d in input:
+        #     [n, r, c] = list(map(int, d.split(" ")))
+        #     print(n, r, c, answer)
+        #     self.assertEqual(main(n, r, c), answer)
 
 
 if __name__ == '__main__':
