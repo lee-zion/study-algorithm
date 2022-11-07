@@ -21,24 +21,25 @@ def main(input):
             arr = list(map(int, merged.split(",")))
         offset += 3
         q = deque(arr)
-        is_reversed = False
+        is_reversed, is_error = False, False
         for cmd in commands:
             if cmd == "R":
                 is_reversed = not is_reversed
             elif cmd == "D":
                 if not q:
                     answer.append("error")
+                    is_error = True
+                    break
                 elif is_reversed:
                     q.pop()
                 else:
                     q.popleft()
-        arr = list(q)
-        if is_reversed:
-            arr.reverse()
-        # ret = "[" + ",".join(map(str, arr)) + "]"
-        ret = f'[{",".join(map(str, arr))}]'
-        # ret = f'[{",".join(list(q))}]'
-        answer.append(str(ret))
+        if not is_error:
+            arr = list(q)
+            if is_reversed:
+                arr.reverse()
+            ret = f'[{",".join(map(str, arr))}]'
+            answer.append(str(ret))
     return answer
 
 class TestCases(unittest.TestCase):
