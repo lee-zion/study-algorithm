@@ -27,15 +27,27 @@ def main(args):
     limits = content.find('div', { "id" : "problem_limit" }).getText().strip()
     samples = content.find_all(class_ = "sampledata")
     examples = ""
+    file = None
     for i, sample in enumerate(samples):
-        examples += """## 예제 {iotext} {idx}\n\n```\n{data}\n```\n\n""".format(iotext="입력" if i%2 == 0 else "출력", idx=int(i/2)+1, data=sample.getText().strip())
+        example_txt = sample.getText().strip()
+        idx = int(i/2) + 1
+        examples += """## 예제 {iotext} {idx}\n\n```\n{data}\n```\n\n""".format(iotext="입력" if i%2 == 0 else "출력", idx=idx, data=example_txt)
+        if i%2 == 0:
+            file = open(f"{title}/input{idx}.txt", "w")
+        else:
+            file = open(f"{title}/output{idx}.txt", "w")
+        file.write(example_txt)
+        file.close()
+            
 
-    document = """# [{title}]({link})\n\n{description}\n\n# {in_cond}\n\n# {out_cond}\n\n# 제한조건\n\n{limits}\n\n{examples}""".format(
+    readme_content = """# [{title}]({link})\n\n{description}\n\n# {in_cond}\n\n# {out_cond}\n\n# 제한조건\n\n{limits}\n\n{examples}""".format(
         title=title, description=description, link=link, in_cond=in_cond, out_cond=out_cond, limits=limits, examples=examples
     )
 
+
+
     file = open(f"{title}/README.md", "a")
-    file.write(document)
+    file.write(readme_content)
     file.close()
 if __name__ == '__main__':
     # main()
