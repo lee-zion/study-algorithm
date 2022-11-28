@@ -24,17 +24,17 @@ def main(inputs):
                 # 
                 diff = dest - depart
                 # 2**n <= diff < 2**(n+1)을 만족하는 n 찾기
-                root = isqrt(diff)
+                iroot = isqrt(diff)
                 log2n = int(log2(diff))
-                root2 = pow(root, 2)
-                if root == log2n:
-                    answer.append(str(2*root - 1))
+                root2 = pow(iroot, 2)
+                if diff == root2:
+                    answer.append(str(2*iroot - 1))
                     # print(2*root - 1)
-                elif diff <= root2 + log2n:
-                    answer.append(str(2*root))
+                elif diff <= root2 + iroot:
+                    answer.append(str(2*iroot))
                     # print(2*root)
                 else:
-                    answer.append(str(2*root + 1))
+                    answer.append(str(2*iroot + 1))
                     # print(2*root - 1)
             answers.append(answer)
         return answers
