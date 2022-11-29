@@ -1,6 +1,6 @@
 memory[kb]
-32564
+35876
 time[ms]
-296
+4864
 code size[B]
-2056
+2340

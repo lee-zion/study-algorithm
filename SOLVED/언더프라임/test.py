@@ -51,10 +51,9 @@ def main(inputs):
             start = time.perf_counter()
 
             a, b = map(int, input[0].split())
-            answer = 0
-            # if dp[i] == 1: i is prime number
             dp = [1] * (b + 1)
             dp[0] = dp[1] = 0
+
             # to remove if statement inside for loop, ugly repeat occured
             # all even number
             for num in range(2, 3):
@@ -93,16 +92,38 @@ def main(inputs):
             #                 break
             
             # deque.popleft() vs element in list
-            for num, is_prime in enumerate(dp[a:b+1]):
-                if is_prime:
-                    continue
-                i_prime = 0
-                while True:
-                    q, r = divmod(num, primes[i_prime])
-                    if r == 0:
+            # if dp[i] == 1: i is prime number
+            for i in range(2, b+1):
+                for j in range(2, b+1):
+                    if i * j > b:
+                        break
+                    if dp[j]:
+                        dp[i*j] = dp[i] + 1
 
-                # dp[num] is not prime
-                
+                # do-while in python
+                # do:
+                #   task()
+                # while condition
+                # ->
+                # while True:
+                #   task()
+                #   if not condition: break
+                #   or
+                # while True:
+                #   task()
+                #   if condition: continue
+                #   break
+                # 
+                # i = 0
+                # while True:
+                #     q, r = divmod(num, primes[i])
+                #     if r == 0:
+                #         # num = q * primes[i]
+                #         dp[num] = dp[num // q]
+            answer = 0
+            for i in range(a, b+1):
+                if dp[i] in primes:
+                    answer += 1
             answers.append(str(answer))
             end = time.perf_counter()
             print(f"Time elapsed: {(end - start)*10**3} ms")
