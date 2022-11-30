@@ -31,7 +31,7 @@ class TestCases(unittest.TestCase):
         inputs, answers = [], []
         for i in range(1, example_num + 1):
             inputs.append(read_file(f"problem_title/input{i}.txt"))
-            answers.append(read_file(f"problem_title/output{i}.txt")[0])
+            answers.append(int(read_file(f"problem_title/output{i}.txt")[0]))
         self.assertEqual(main(inputs), answers)
 
 
