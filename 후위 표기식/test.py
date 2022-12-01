@@ -1,6 +1,7 @@
 import unittest
 from traceback import print_exception
 import sys
+import re
 
 def read_file(filename):
     file = open(filename, 'r')
@@ -15,6 +16,84 @@ def main(inputs):
     try:
         for input in inputs:
             # your code here
+            # idea
+            # tree 구조로 치환한 뒤 leaf부터 root까지, 왼쪽에서 오른쪽으로 이동
+            # 
+            # ex) a*(b+c) = abc+*
+            #        _____*_____
+            #       /           \
+            #      a           __+__
+            #                 /     \
+            #                b       c
+            # -->
+            #        _____*_____
+            #       /           \
+            #      a            bc+
+            # -->
+            #           abc+*
+            # 
+            # ex) a*b+c = ab*c+
+            #        _____+_____
+            #       /           \
+            #    __*__           c
+            #   /     \
+            #  a       b
+            # -->
+            #        _____+_____
+            #       /           \
+            #     ab*            c
+            # -->
+            #           ab*c+
+            # 
+            # ex) a+b*c = abc*+
+            #        _____+_____
+            #       /           \
+            #      a           __*__
+            #                 /     \
+            #                b       c
+            # -->
+            #        _____+_____
+            #       /           \
+            #      a            bc*
+            # -->
+            #           abc*+
+            # 
+            class BinaryTree:
+                def __init__(self) -> None:
+                    self.left = None
+                    self.right = None
+                    self.parent = None
+                def addLeaf(self, left, right):
+                    self.left = left
+                    self.right = right
+                def addParent(self, parent):
+                    self.parent = parent
+                def showLeaf(self, left, right):
+                    print(f"left: {self.left}, right: {self.right}")
+                def showParent(self, parent):
+                    print(f"parent: {self.parent}")
+            tree = BinaryTree()
+            
+            given: str = input[0]
+            operators = [
+                "([(|)])",
+                "([*|/])",
+                "([+|-])",
+            ]
+            for operator_group in operators:
+                given = re.split(operator_group, given)
+                for part in given:
+                    if part in operators[1:-1].split("|"):
+                        
+                given.find
+                # How to find string
+                # 1. inside parenthesis ()
+                # 2. near * / + -
+                # given = re.split(operator_group, given)
+                # given = list(filter(None, re.split(operator_group, given)))
+                for i in range(len(given)):
+                    print(given[i])
+                    # (, ), *, /, +, -
             answer = True
             answers.append(answer)
         return answers
@@ -31,7 +110,7 @@ class TestCases(unittest.TestCase):
         inputs, answers = [], []
         for i in range(1, 4 + 1):
             inputs.append(read_file(f"후위 표기식/input{i}.txt"))
-            answers.append(int(read_file(f"후위 표기식/output{i}.txt")[0]))
+            answers.append(read_file(f"후위 표기식/output{i}.txt")[0])
         self.assertEqual(main(inputs), answers)
 
 
