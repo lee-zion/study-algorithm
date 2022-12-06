@@ -1,0 +1,6 @@
+memory[kb]
+30840
+time[ms]
+6528
+code size[B]
+334
