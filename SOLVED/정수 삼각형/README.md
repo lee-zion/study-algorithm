@@ -1,6 +1,6 @@
 # [정수 삼각형](https://www.acmicpc.net/problem/1932)
 
-7
+        7
       3   8
     8   1   0
   2   7   4   4
