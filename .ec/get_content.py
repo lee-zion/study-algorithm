@@ -7,7 +7,7 @@ cursor = connect.cursor()
 
 # def main(args="https://www.acmicpc.net/problem/1463"):
 def main(args):
-    link = args
+    link = f"https://www.acmicpc.net/problem/{args}" if args.isnumeric() else args
     id = int(link.split("/")[-1])
     cursor.execute("CREATE TABLE IF NOT EXISTS RAW_TABLE (id integer PRIMARY_KEY, content blob)")
     cursor.execute("SELECT id, content FROM RAW_TABLE WHERE id = ?", (id,))
@@ -46,7 +46,6 @@ def main(args):
     file = open(f"{title}/README.md", "a")
     file.write(readme_content)
     file.close()
-
     print(len(samples) // 2)
 if __name__ == '__main__':
     # main()
