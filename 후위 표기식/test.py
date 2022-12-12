@@ -60,18 +60,22 @@ def main(inputs):
             # 
             class BinaryTree:
                 def __init__(self) -> None:
-                    self.left = None
-                    self.right = None
-                    self.parent = None
-                def addLeaf(self, left, right):
-                    self.left = left
-                    self.right = right
-                def addParent(self, parent):
-                    self.parent = parent
-                def showLeaf(self, left, right):
-                    print(f"left: {self.left}, right: {self.right}")
-                def showParent(self, parent):
-                    print(f"parent: {self.parent}")
+                    self.root = None
+                def postorder(self):
+                    order = ""
+                    def _postorder(node: Node):
+                        nonlocal order
+                        if node.left:
+                            _postorder(node.left)
+                        if node.right:
+                            _postorder(node.right)
+                        order += node.item
+                    return order
+            class Node:
+                def __init__(self, item) -> None:
+                    self.item = item
+                    self.left = self.right = None
+            
             tree = BinaryTree()
             
             given: str = input[0]
@@ -82,10 +86,10 @@ def main(inputs):
             ]
             for operator_group in operators:
                 given = re.split(operator_group, given)
-                for part in given:
-                    if part in operators[1:-1].split("|"):
+                # for part in given:
+                #     if part in operators[1:-1].split("|"):
                         
-                given.find
+                # given.find
                 # How to find string
                 # 1. inside parenthesis ()
                 # 2. near * / + -

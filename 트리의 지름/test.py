@@ -10,12 +10,27 @@ def read_file(filename):
     file.close()
     return ret
 
+class Node(object):
+    def __init__(self, item) -> None:
+        self.item = item
+        self.left = self.right = None
+
+class BinaryTree(object):
+    def __init__(self) -> None:
+        self.root = None
+
 def main(inputs):
     answers = []
     try:
         for input in inputs:
             # your code here
+            n = int(input[0])
+            graph = []
+            for i in range(n-1):
+                parent, child, weight = list(map(int, input[1+i].split()))
+                
             answer = True
+
             answers.append(answer)
         return answers
     except Exception:

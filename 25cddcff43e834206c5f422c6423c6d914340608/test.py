@@ -14,7 +14,10 @@ def main(inputs):
     answers = []
     try:
         for input in inputs:
-            # your code here
+            n, m = map(int, input[0].split())
+            nums = list(map(int, input[1].split()))
+            # for num in nums:
+
             answer = True
             answers.append(answer)
         return answers
@@ -30,8 +33,8 @@ class TestCases(unittest.TestCase):
     def test_input_txt(self):
         inputs, answers = [], []
         for i in range(1, 3 + 1):
-            inputs.append(read_file(f"N과 M (12)/input{i}.txt"))
-            answers.append(int(read_file(f"N과 M (12)/output{i}.txt")[0]))
+            inputs.append(read_file(f"25cddcff43e834206c5f422c6423c6d914340608/input{i}.txt"))
+            answers.append(read_file(f"25cddcff43e834206c5f422c6423c6d914340608/output{i}.txt"))
         self.assertEqual(main(inputs), answers)
 
 
