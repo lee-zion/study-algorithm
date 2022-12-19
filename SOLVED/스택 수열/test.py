@@ -16,19 +16,25 @@ def main(inputs):
     try:
         for input in inputs:
             # your code here
-            answer = []
+            answer = deque([])
             n = int(input[0])
             # 숫자 x가 주어졌을 때, 이후의 x보다 작은 숫자들의 순서가 
-            targets = []
+            curr = 1
             stack = deque([])
             for i in range(n):
-                targets.append(int(input[1+i]))
-            for target in targets:
-                for i in range(1, target + 1):
-                    stack.append(i)
-                answer.append(stack.pop())
-            # nums에서 popleft로 하나씩 뽑아갈 수 있음
-            answers.append(answer)
+                dest = int(input[1+i])
+                while dest >= curr:
+                    stack.append(curr)
+                    answer.append("+")
+                    curr += 1
+                top = stack.pop() if stack else None
+                if top == dest:
+                   answer.append("-") 
+                else:
+                    answer = deque(["NO"])
+                    break
+            # [answers.append(answer.popleft()) for _ in range(len(answer))]
+            answers.append(list(answer))
         return answers
     except Exception:
         print(f"===========================================================================")
@@ -43,7 +49,7 @@ class TestCases(unittest.TestCase):
         inputs, answers = [], []
         for i in range(1, 2 + 1):
             inputs.append(read_file(f"스택 수열/input{i}.txt"))
-            answers.append(int(read_file(f"스택 수열/output{i}.txt")[0]))
+            answers.append(read_file(f"스택 수열/output{i}.txt"))
         self.assertEqual(main(inputs), answers)
 
 
