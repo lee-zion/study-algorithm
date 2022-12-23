@@ -19,6 +19,10 @@ def main(inputs):
             # idea
             # tree 구조로 치환한 뒤 leaf부터 root까지, 왼쪽에서 오른쪽으로 이동
             # 
+            # Category: Serialize/Deserialize of Binary Tree
+            # https://bellog.tistory.com/146
+            # 
+            # 
             # ex) a*(b+c) = abc+*
             #        _____*_____
             #       /           \
@@ -58,46 +62,54 @@ def main(inputs):
             # -->
             #           abc*+
             # 
-            class BinaryTree:
-                def __init__(self) -> None:
-                    self.root = None
-                def postorder(self):
-                    order = ""
-                    def _postorder(node: Node):
-                        nonlocal order
-                        if node.left:
-                            _postorder(node.left)
-                        if node.right:
-                            _postorder(node.right)
-                        order += node.item
-                    return order
-            class Node:
-                def __init__(self, item) -> None:
-                    self.item = item
-                    self.left = self.right = None
-            
-            tree = BinaryTree()
-            
+            # ex) a+b+c+d = abc
+            #        _____+_____
+            #       /           \
+            #      a           __+__
+            #                 /     \
+            #                b     __+__
+            #                     /     \ 
+            #                    c       d
+            # -->
+            #        _____+_____
+            #       /           \
+            #      a           bcd++
+            # -->
+            #           abcd+++
+            # 
             given: str = input[0]
-            operators = [
-                "([(|)])",
-                "([*|/])",
-                "([+|-])",
-            ]
-            for operator_group in operators:
-                given = re.split(operator_group, given)
-                # for part in given:
-                #     if part in operators[1:-1].split("|"):
+            # operators = ["(", ")"]
+            operators = ["+", "-", "*", "/", "(", ")"]
+
+            seq = []
+            for i in given:
+                if i in operators:
+                    seq.append(i)
+                else:
+                    seq.append(i)
+            print(seq)
+
+            def deserialize(str):
+                
+            # operators = [
+            #     "([(|)])",
+            #     "([*|/])",
+            #     "([+|-])",
+            # ]
+            # for operator_group in operators:
+            #     given = re.split(operator_group, given)
+            #     # for part in given:
+            #     #     if part in operators[1:-1].split("|"):
                         
-                # given.find
-                # How to find string
-                # 1. inside parenthesis ()
-                # 2. near * / + -
-                # given = re.split(operator_group, given)
-                # given = list(filter(None, re.split(operator_group, given)))
-                for i in range(len(given)):
-                    print(given[i])
-                    # (, ), *, /, +, -
+            #     # given.find
+            #     # How to find string
+            #     # 1. inside parenthesis ()
+            #     # 2. near * / + -
+            #     # given = re.split(operator_group, given)
+            #     # given = list(filter(None, re.split(operator_group, given)))
+            #     for i in range(len(given)):
+            #         print(given[i])
+            #         # (, ), *, /, +, -
             answer = True
             answers.append(answer)
         return answers

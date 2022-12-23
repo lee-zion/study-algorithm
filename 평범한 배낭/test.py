@@ -17,12 +17,17 @@ def main(inputs):
             # your code here
             answer = 0
             n, k = map(int, input[0].split())
+            dp = [[0] * n for _ in range(k)]
             items = []
             for i in range(n):
                 items.append(list(map(int, input[1+i].split())))
-
+                # i_item, v_item = map(int, input[1+i].split())
+                # dp[i_item] = v_item
             # DP 점화식
-            # 
+            # dp[item_idx][weight_sum] = max(dp[item_idx-1][weight_sum], dp[item_idx-1][weight_sum - weight_curr] + value_curr)
+            for i_item in range(n):
+                dp[i_item] = max(dp[i_item])
+            def KnapSack(weight_max, weights, )
 
             # def dfs(curr, weight, value):
             #     nonlocal visited, items, k, answer
