@@ -15,41 +15,93 @@ def main(inputs):
     try:
         for input in inputs:
             # your code here
-            # party index from 0
-            # person index from 1
-            n_people, n_party = map(int, input[0].split())
-            acquaint = input[1].split()
-            n_acquaint = int(acquaint[0])
-            parties = [[False]*(n_people + 1) for _ in range(n_party)]
-            acquaints = [False] * (n_people + 1)
-            for e in list(map(int, acquaint[1:])):
-                acquaints[e] = True
-            for i_party in range(n_party):
-                party = list(map(int, input[2 + i_party].split()))[1:]
-                for person in party:
-                    parties[i_party][person] = True
+            # Union-Find algorithm
+            def find_parent(parent, x):
+                if parent[x] != x:
+                    parent[x] = find_parent(parent, parent[x])
+                return parent[x]
             
-            # 모든 파티에 대해 <-- acquaint 발생으로 인한 처음에 처리한 파티를 업데이트?
-            for party in parties:
-                # 파티에 있는 사람 중 acquaint가 있다면
-                if True in (party and acquaint):
-                    for i, ac in enumerate(acquaint):
-                        if ac:
-                            party[i] = True
-            answer = 0
-            for i_party in range(n_party):
-                party = parties[i_party]
-                can_i_exaggerate = True
-                for i in range(n_party):
-                    if acquaints[i] and party[i]:
-                        can_i_exaggerate = False
-                        break
-                if can_i_exaggerate:
-                    answer += 1
+            def union_parent(parent, acquaints, a, b):
+                a = find_parent(parent, a)
+                b = find_parent(parent, b)
+
+                if a in acquaints and b in acquaints:
+                    return
+                if a in acquaints:
+                    parent[b] = a
+                    return
+                if b in acquaints:
+                    parent[a] = b
+                    return
+                # set smaller one to parent
+                if a < b:
+                    parent[b] = a
                 else:
-                    for i in range(n_party):
-                        acquaints[i] = acquaints[i] or party[i]
-                print("1")
+                    parent[a] = b
+            
+            n_people, n_party = map(int, input[0].split())
+            acquaints = list(map(int, input[1].split()))[1:]
+            
+            parents = [0] * (n_people + 1)
+            for i in range(1, n_people + 1):
+                parents[i] = i
+            
+            parties = []
+            for ni in range(n_party):
+                party = list(map(int, input[2 + ni].split()))
+                n_party = party[0]
+                party = party[1:]
+                for attender in range(n_party - 1):
+                    union_parent(parents, acquaints, party[attender], party[attender + 1])
+                parties.append(party)
+                # for pair in combinations(party[1:], min(2, party[0])):
+                #     print(pair)
+                #     union_parent(parents, acquaints, pair[0], pair[1])
+            answer = 0
+            print(parents)
+            for party in parties:
+                for attender in party:
+                    ret = find_parent(parents, attender)
+                    if ret in acquaints:
+                        break
+                else:
+                    answer += 1
+            answers.append(answer)
+            # # party index from 0
+            # # person index from 1
+            # n_people, n_party = map(int, input[0].split())
+            # acquaint = input[1].split()
+            # n_acquaint = int(acquaint[0])
+            # parties = [[False]*(n_people + 1) for _ in range(n_party)]
+            # acquaints = [False] * (n_people + 1)
+            # for e in list(map(int, acquaint[1:])):
+            #     acquaints[e] = True
+            # for i_party in range(n_party):
+            #     party = list(map(int, input[2 + i_party].split()))[1:]
+            #     for person in party:
+            #         parties[i_party][person] = True
+            
+            # # 모든 파티에 대해 <-- acquaint 발생으로 인한 처음에 처리한 파티를 업데이트?
+            # for party in parties:
+            #     # 파티에 있는 사람 중 acquaint가 있다면
+            #     if True in (party and acquaint):
+            #         for i, ac in enumerate(acquaint):
+            #             if ac:
+            #                 party[i] = True
+            # answer = 0
+            # for i_party in range(n_party):
+            #     party = parties[i_party]
+            #     can_i_exaggerate = True
+            #     for i in range(n_party):
+            #         if acquaints[i] and party[i]:
+            #             can_i_exaggerate = False
+            #             break
+            #     if can_i_exaggerate:
+            #         answer += 1
+            #     else:
+            #         for i in range(n_party):
+            #             acquaints[i] = acquaints[i] or party[i]
+            #     print("1")
 
             # n_people, n_party = map(int, input[0].split())
             # acquaints = input[1].split()
@@ -109,8 +161,6 @@ def main(inputs):
             #     for i in range(a):
             #         party.remove(party[rem.pop()])
             # answer = len(party)
-
-            answers.append(answer)
         return answers
     except Exception:
         print(f"===========================================================================")
@@ -123,7 +173,7 @@ def main(inputs):
 class TestCases(unittest.TestCase):
     def test_input_txt(self):
         inputs, answers = [], []
-        for i in range(4, 7 + 1):
+        for i in range(1, 8 + 1):
             inputs.append(read_file(f"거짓말/input{i}.txt"))
             answers.append(int(read_file(f"거짓말/output{i}.txt")[0]))
         self.assertEqual(main(inputs), answers)

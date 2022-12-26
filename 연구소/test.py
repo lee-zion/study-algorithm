@@ -1,7 +1,8 @@
 import unittest
 from traceback import print_exception
 import sys
-from collections import deque
+from collections import deque, Counter
+from itertools import combinations
 
 def read_file(filename):
     file = open(filename, 'r')
@@ -17,47 +18,91 @@ def main(inputs):
         for input in inputs:
             # your code here
             X_MAX, Y_MAX = map(int, input[0].split())
-            graph = []
+            answer, graph = 0, []
+            EMPTY, WALL, VIRUS = 0, 1, 2
             for i in range(X_MAX):
                 graph.append(list(map(int, input[1+i].split())))
-            answer = 0
+            
+            
+            def find_empty(graph):
+                empties = []
+                nonlocal X_MAX, Y_MAX, EMPTY
+                for x in range(X_MAX):
+                    for y in range(Y_MAX):
+                        if graph[x][y] == EMPTY:
+                            empties.append((x, y))
+                return empties
 
-            EMPTY, WALL, VIRUS = 0, 1, 2
-            propagatables = []
-            for x in range(X_MAX):
-                for y in range(Y_MAX):
-                    if graph[x][y] == VIRUS:
-                        dx, dy = [1, -1, 0, 0], [0, 0, 1, -1]
-                        is_propagatable = True
+            def column(matrix, i):
+                return [row[i] for row in matrix]
+
+            def find_virus(graph):
+                viruses = []
+                nonlocal X_MAX, Y_MAX, VIRUS
+                for x in range(X_MAX):
+                    for y in range(Y_MAX):
+                        if graph[x][y] == VIRUS:
+                            viruses.append((x, y))
+                return viruses
+            
+            def spread_virus(viruses, graph):
+                nonlocal EMPTY, VIRUS, X_MAX, Y_MAX
+                q = deque(viruses)
+                dx, dy = [1, -1, 0, 0], [0, 0, 1, -1]
+                visited = [[False] * X_MAX for _ in range(Y_MAX)]
+                while q:
+                    (vx, vy) = q.popleft()
+                    nx, ny = vx + dx[i], vy + dy[i]
+                    if vx < 0 or vy < 0 or vx >= X_MAX or vy >= Y_MAX:
+                        continue
+                    if graph[nx][ny] == EMPTY and not visited[nx][ny]:
+                        visited[nx][ny] = True
+                        graph[nx][ny] = VIRUS
+                        q.append((nx, ny))
+            
+            def get_empty_after_walled(empties, empty2wall):
+                remained = Counter()
+                f_empties = []
+                for e in empties:
+                    if e in remained:
+                        remained[e] -= 1
+                    else:
+                        f_empties.append(e)
+                return f_empties
+            
+            def get_safeties(empties, walled, graph):
+                nonlocal EMPTY
+                COUNTED = -2
+                cnt = 0
+                dx, dy = [1, -1, 0, 0], [0, 0, 1, -1]
+                f_empties = get_empty_after_walled(empties, walled)
+                q = deque([f_empties])
+                visited = [[False] * X_MAX for _ in range(Y_MAX)]
+                while q:
+                    v = q.popleft()
+                for x in range(X_MAX):
+                    for y in range(Y_MAX):
                         for i in range(4):
                             vx, vy = x + dx[i], y + dy[i]
                             if vx < 0 or vy < 0 or vx >= X_MAX or vy >= Y_MAX:
                                 continue
-                            if graph[vx][vy] == EMPTY:
-                                is_propagatable = True
-                                # 어디를 막아야 (vx, vy)가 퍼지지 않게 할 수 있을까? 최소 0개(이미 막힘), 최대 4개의 벽이 필요
-                                break
-                        if is_propagatable:
-                            # (x,y) should be blocked
-                            # from (x,y), find from its nearest empty space
-                            propagatables.append((x, y))
-            # 어디를 막아야 (vx, vy)가 퍼지지 않게 할 수 있을까? 최소 0개(이미 막힘), 최대 4개의 벽이 필요
-            for vx, vy in propagatables:
-                dist = 1
-                visited = []
-                q = deque([vx, vy])
-                while q:
-                    vx, vy = q.popleft()
-                    visited.append((vx, vy))
-                    for i in range(dist):
-                        dx, dy = [1, -1, 0, 0], [0, 0, 1, -1]
-                        for i in range(4):
-                            vx, vy = vx + dx[i], vy + dy[i]
-                            if vx < 0 or vy < 0 or vx >= X_MAX or vy >= Y_MAX or (vx, vy) in visited:
-                                continue
+                        if graph[x][y] == EMPTY:
+                            cnt += 1
+                return cnt
+            def solve(viruses, empties, graph):
+                nonlocal answer, WALL, EMPTY
+                dx, dy = [1, -1, 0, 0], [0, 0, 1, -1]
+                for empty2wall in combinations(empties, 3):
+                    for x, y in empty2wall:
+                        graph[x][y] = WALL
+                    spread_virus(viruses, graph)
+                    get_safeties(graph, empty2wall, graph)
+                    for x, y in empty2wall:
+                        graph[x][y] = EMPTY
+            empties = find_empty(graph)
+            viruses = find_virus(graph)
+            answer = bfs(empties, graph)
 
-
-                print(vx, vy)
             answers.append(answer)
         return answers
     except Exception:
