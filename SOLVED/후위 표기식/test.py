@@ -1,8 +1,8 @@
 import unittest
 from traceback import print_exception
-import sys
+import sys, string
 import re
-
+from collections import deque
 def read_file(filename):
     file = open(filename, 'r')
     ret = file.readlines()
@@ -77,40 +77,71 @@ def main(inputs):
             # -->
             #           abcd+++
             # 
-            given: str = input[0]
+            # given: str = input[0]
             # operators = ["(", ")"]
-            operators = ["+", "-", "*", "/", "(", ")"]
+            # operators = ["+", "-", "*", "/", "(", ")"]
+            # offset = 0
+            # q = deque([])
+            # def serialize(given, pattern: str):
+            #     given = re.split(pattern, "".join(given))
+            #     lg = len(given)
+            #     for i in range(lg, -1, -1):
+            #         if i+1 >= lg:
+            #             continue
+            #         if given[i+1] == "":
+            #             q.append(given[i])
+            #             given = given[:i] + given[i+1:]
+            
+            # serialize(given, '[()]')
+            # given.split()
+            # serialize(given, '[*/]')
+            # serialize(given, '[+-]')
+            # for i, s in enumerate(given):
+            #     # if i + 1 + offset >= lg:
+            #     #     continue
+            #     if i + 1 >= lg:
+            #         continue
+            #     if given[i+1] == "":
+            #         # offset += 1
+            #         q.append(given[i])
+            #         given = given[:i+1].append(given[i+2:]) if i + 2 < lg else given[:i+1]
+            # def deserialize(str):
 
-            seq = []
-            for i in given:
-                if i in operators:
-                    seq.append(i)
+            # stack-based solution (common one)
+            answer = ""
+            operators = deque([])
+            given: str = input[0]
+            for s in given:
+                if s in string.ascii_uppercase:
+                    print(s)
+                    answer += s
                 else:
-                    seq.append(i)
-            print(seq)
+                    if s == "(":
+                        operators.append(s)
+                    elif s == ")":
+                        while operators and operators[-1] != "(":
+                            top = operators.pop()
+                            print(top)
+                            answer += top
+                        operators.pop()
+                    elif s in ["*", "/"]:
+                        while operators and operators[-1] in ["*", "/"]:
+                            top = operators.pop()
+                            print(top)
+                            answer += top
+                        operators.append(s)
+                    elif s in ["+", "-"]:
+                        while operators and operators[-1] != "(":
+                            top = operators.pop()
+                            print(top)
+                            answer += top
+                        operators.append(s)
+            while operators:
+                top = operators.pop()
+                print(top)
+                answer += top
 
-            def deserialize(str):
-                
-            # operators = [
-            #     "([(|)])",
-            #     "([*|/])",
-            #     "([+|-])",
-            # ]
-            # for operator_group in operators:
-            #     given = re.split(operator_group, given)
-            #     # for part in given:
-            #     #     if part in operators[1:-1].split("|"):
-                        
-            #     # given.find
-            #     # How to find string
-            #     # 1. inside parenthesis ()
-            #     # 2. near * / + -
-            #     # given = re.split(operator_group, given)
-            #     # given = list(filter(None, re.split(operator_group, given)))
-            #     for i in range(len(given)):
-            #         print(given[i])
-            #         # (, ), *, /, +, -
-            answer = True
+            print(answer)
             answers.append(answer)
         return answers
     except Exception:
