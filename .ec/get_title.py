@@ -1,5 +1,5 @@
 import sys, os, sqlite3
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 
 connect = sqlite3.connect("acmipc.db")
@@ -14,7 +14,10 @@ def main(args):
     found = cursor.fetchone()
     if not found:
         # if id do not exist, read from bs4
-        content = BeautifulSoup(urlopen(link), 'html.parser')
+        # headers = { "User-Agent": "Chrome/66.0.3359.181"}
+        headers = { "User-Agent": "Chrome/108.0.5359.125"}
+        req = Request(link, headers=headers)
+        content = BeautifulSoup(urlopen(req), 'html.parser')
         cursor.execute("INSERT INTO RAW_TABLE VALUES (?, ?)", (id, str(content)))
         connect.commit()
     else:
