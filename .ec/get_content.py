@@ -40,9 +40,9 @@ def main(args):
         idx = int(i/2) + 1
         examples += """## 예제 {iotext} {idx}\n\n```\n{data}\n```\n\n""".format(iotext="입력" if i%2 == 0 else "출력", idx=idx, data=example_txt)
         if i%2 == 0:
-            file = open(f"{title}/input{idx}.txt", "w")
+            file = open(f"{title}/input{idx}.txt", "w", encoding="utf-8")
         else:
-            file = open(f"{title}/output{idx}.txt", "w")
+            file = open(f"{title}/output{idx}.txt", "w", encoding="utf-8")
         file.write(example_txt)
         file.close()
     
@@ -50,7 +50,7 @@ def main(args):
         title=title, description=description, link=link, in_cond=in_cond, out_cond=out_cond, limits=limits, examples=examples, hint=hint, imgs=imgs
     )
 
-    file = open(f"{title}/README.md", "a")
+    file = open(f"{title}/README.md", "a", encoding="utf-8")
     file.write(readme_content)
     file.close()
     print(len(samples) // 2)
