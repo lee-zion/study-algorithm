@@ -2,7 +2,6 @@
 
 mkfile() {
     array=()
-    printf "%s" ""
     while read line ; do
         array+=("$line")
     done < <(python3 ./.ec/get_title.py "$1")

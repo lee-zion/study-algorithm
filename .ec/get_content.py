@@ -24,7 +24,14 @@ def main(args):
     description = content.find('div', { "id" : "problem_description" }).getText().strip()
     in_cond = content.find('section', { "id" : "input" }).getText().strip()
     out_cond = content.find('section', { "id" : "output" }).getText().strip()
+    hint = content.find('section', { "id" : "hint" }).getText().strip()
     limits = content.find('div', { "id" : "problem_limit" }).getText().strip()
+    
+    img_src = content.find_all('img', { "height" : "", "class": "", "alt": "" })
+    imgs = ""
+    for i, src in enumerate(img_src):
+        imgs += """## 그림 {i}\n\n{link}""".format(i=i+1, link=f'<img src="https://www.acmicpc.net{src["src"]}" width="200px" />')
+
     samples = content.find_all(class_ = "sampledata")
     examples = ""
     file = None
@@ -38,9 +45,9 @@ def main(args):
             file = open(f"{title}/output{idx}.txt", "w")
         file.write(example_txt)
         file.close()
-
-    readme_content = """# [{title}]({link})\n\n{description}\n\n# {in_cond}\n\n# {out_cond}\n\n# 제한조건\n\n{limits}\n\n{examples}""".format(
-        title=title, description=description, link=link, in_cond=in_cond, out_cond=out_cond, limits=limits, examples=examples
+    
+    readme_content = """# [{title}]({link})\n\n{description}\n\n{imgs}\n\n# {in_cond}\n\n# {out_cond}\n\n# 제한조건\n\n{limits}\n\n# {hint}\n\n{examples}""".format(
+        title=title, description=description, link=link, in_cond=in_cond, out_cond=out_cond, limits=limits, examples=examples, hint=hint, imgs=imgs
     )
 
     file = open(f"{title}/README.md", "a")
