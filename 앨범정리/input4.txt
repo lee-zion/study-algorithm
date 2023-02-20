@@ -1,0 +1,12 @@
+11
+mkalb deptha
+ca deptha
+mkalb depthb
+ca depthb
+mkalb depthc
+ca depthc
+insert photoc
+ca ..
+rmalb 0
+ca ..
+rmalb 0
