@@ -16,6 +16,35 @@ def main(inputs):
     try:
         for input in inputs:
             # your code here
+            """
+            Error of today
+            RuntimeError: dictionary changed size during iteration
+            
+            Code block)
+            for key in graph.keys():
+                q = deque([key])
+                while q:
+                    curr = q.popleft()
+                    for adj in graph[curr]:
+                        if not graph[adj]:
+                            continue
+                        q.append(adj)
+
+            AS-IS)
+            `if not graph[adj]` create a new key adj to graph, which changes graph.keys() list at higher-level for loop
+
+            TO-BE)
+            ...
+            if adj in graph.keys():
+                ...
+            or
+            (if graph can have a lot of key)
+            keys = graph.keys()
+            for key in keys:
+                ...
+                if adj not in keys:
+                    ...
+            """
             def get_max_dou_with_key(graph):
                 dou = (0, -1)
                 """
@@ -32,51 +61,22 @@ def main(inputs):
                 visited = defaultdict(set)
                 keys = graph.keys()
 
-                """
-                Error of today
-                RuntimeError: dictionary changed size during iteration
-                
-                Code block)
-                for key in graph.keys():
-                    q = deque([key])
-                    while q:
-                        curr = q.popleft()
-                        for adj in graph[curr]:
-                            if not graph[adj]:
-                                continue
-                            q.append(adj)
-
-                AS-IS)
-                `if not graph[adj]` create a new key adj to graph, which changes graph.keys() list at higher-level for loop
-
-                TO-BE)
-                ...
-                if adj in graph.keys():
-                    ...
-
-                or
-                
-                (if graph can have a lot of key)
-                keys = graph.keys()
-                for key in keys:
-                    ...
-                    if adj not in keys:
-                        ...
-                """
                 for key in keys:
                     temp = 0
                     q = deque([key])
                     visited[key].add(key)
                     while q:
                         curr = q.popleft()
-                        temp += len(graph[curr])
+                        # if curr not in keys:
+                        #     continue
                         for adj in graph[curr]:
                             if adj in visited[key]:
                                 continue
+                            temp += 1
+                            visited[key].add(adj)
                             if adj not in keys:
                                 continue
                             q.append(adj)
-                            visited[key].add(adj)
                     if temp > dou:
                         dou = temp
                         dou_key = key
