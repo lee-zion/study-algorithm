@@ -6,11 +6,7 @@ chopsticks = list(map(int, input().strip().split()))
 
 def solution(n, chopsticks):
     answer = 0
-    correct = [[2, 0, 0, 0]
-    , [0, 2, 0, 0]
-    , [0, 0, 2, 0]
-    , [0, 0, 0, 2]]
-    n = len(chopsticks)
+    done = [[2, 0, 0, 0], [0, 2, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]]
     board = [[0]*4 for _ in range(n)]
     for i, chop in enumerate(chopsticks):
         for c in chop:
@@ -38,7 +34,7 @@ def solution(n, chopsticks):
         # 같은 라인 찾기: 거리 + 사이의 2 갯수
         for i in range(n):
             curr = board[i]
-            if curr in correct:
+            if curr in done:
                 continue
             for j in range(n):
                 if i == j:
