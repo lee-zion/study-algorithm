@@ -89,7 +89,7 @@ def main(inputs):
 class TestCases(unittest.TestCase):
     def test_input_txt(self):
         inputs, answers = [], []
-        for i in range(1, 1 + 1):
+        for i in range(2, 2 + 1):
             inputs.append(read_file(f"software-maestro/4/input{i}.txt"))
             answers.append(int(read_file(f"software-maestro/4/output{i}.txt")[0]))
         self.assertEqual(main(inputs), answers)

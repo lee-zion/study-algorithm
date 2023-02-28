@@ -1,7 +1,7 @@
 import unittest
 from traceback import print_exception
 import sys
-from collections import defaultdict
+from collections import defaultdict, deque
 
 def read_file(filename):
     file = open(filename, 'r')
@@ -16,14 +16,72 @@ def main(inputs):
     try:
         for input in inputs:
             # your code here
-            def get_dou_with_key(graph):
+            def get_max_dou_with_key(graph):
                 dou = (0, -1)
+                """
+                dou = 0
+                q = deque([begin])
+                while q:
+                    curr = q.popleft()
+                    for child in graph[curr]:
+                        if not visited[child]:
+                            q.append(child)
+                            dou += 1
+                """
+                dou, dou_key = 0, -1
+                visited = defaultdict(set)
+                keys = graph.keys()
+
+                """
+                Error of today
+                RuntimeError: dictionary changed size during iteration
+                
+                Code block)
                 for key in graph.keys():
-                    l = len(graph[key])
-                    if l > dou[1]:
-                        dou = (key, l)
-                return dou
-            
+                    q = deque([key])
+                    while q:
+                        curr = q.popleft()
+                        for adj in graph[curr]:
+                            if not graph[adj]:
+                                continue
+                            q.append(adj)
+
+                AS-IS)
+                `if not graph[adj]` create a new key adj to graph, which changes graph.keys() list at higher-level for loop
+
+                TO-BE)
+                ...
+                if adj in graph.keys():
+                    ...
+
+                or
+                
+                (if graph can have a lot of key)
+                keys = graph.keys()
+                for key in keys:
+                    ...
+                    if adj not in keys:
+                        ...
+                """
+                for key in keys:
+                    temp = 0
+                    q = deque([key])
+                    visited[key].add(key)
+                    while q:
+                        curr = q.popleft()
+                        temp += len(graph[curr])
+                        for adj in graph[curr]:
+                            if adj in visited[key]:
+                                continue
+                            if adj not in keys:
+                                continue
+                            q.append(adj)
+                            visited[key].add(adj)
+                    if temp > dou:
+                        dou = temp
+                        dou_key = key
+                return (dou_key, dou)
+
             def remove_i_from_tree(graph, i):
                 after = defaultdict(list)
                 for key in graph.keys():
@@ -61,9 +119,9 @@ def main(inputs):
             create_domino_graph(graph, p_list, h_list, n)
 
             for _ in range(m):
-                dou_key, dou_val = get_dou_with_key(graph)
+                dou_key, dou_val = get_max_dou_with_key(graph)
                 graph = remove_i_from_tree(graph, dou_key)
-            _, answer = get_dou_with_key(graph)
+            _, answer = get_max_dou_with_key(graph)
             if answer == -1:
                 answer = 0
             answers.append(answer)
@@ -79,7 +137,7 @@ def main(inputs):
 class TestCases(unittest.TestCase):
     def test_input_txt(self):
         inputs, answers = [], []
-        for i in range(1, 5 + 1):
+        for i in range(1, 6 + 1):
             inputs.append(read_file(f"software-maestro/3/input{i}.txt"))
             answers.append(int(read_file(f"software-maestro/3/output{i}.txt")[0]))
         self.assertEqual(main(inputs), answers)
