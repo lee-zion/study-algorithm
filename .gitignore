@@ -1,2 +1,9 @@
 *.db
 .vscode
+sa/
+MEX/
+mex/
+SubsetMex/
+NYPC/
+programmers/
+leetcode/
