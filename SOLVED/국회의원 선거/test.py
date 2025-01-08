@@ -1,5 +1,6 @@
 import unittest
 from traceback import print_exception
+import heapq
 import sys
 
 def read_file(filename):
@@ -15,30 +16,27 @@ def main(inputs):
     try:
         for input in inputs:
             # your code here
-            # max가 여러명인 경우
-            # +1하기
-            # 이전까지는?
-            # max를 찾아서 diff의 절반만큼 (홀수인 경우 +1) 매수
+            """
+            N = a1 a2 ... an
+            s = sum(N)
+            """
             votes = []
             for i in range(int(input[0])):
                 votes.append(int(input[1+i]))
+            mine = votes[0]
+            max_heap = []
+            for vote in votes:
+                heapq.heappush(max_heap, -vote)
+            
             answer = 0
             while True:
-                M = max(votes)
-                iM = votes.index(M)
-                if iM == 0:
-                    # if there are multiple of vote M
-                    if votes[::-1].index(M) != len(votes) - 1:
-                        answer += 1
+                competitor = -heapq.heappop(max_heap)
+                if mine > competitor:
                     break
-                # votes를 뒤집어서 iM이 바뀐다면, M이 여러개 있다는 것.
-                # divmod의 2nd arg를 M의 갯수로 바꿔야 할듯?
-                # 0 10 ... 10을 못 푸는 이유가 이건데?
-                q, r = divmod(M - votes[0], 2)
-                diff = q + r
-                votes[0] += diff
-                votes[iM] -= diff
-                answer += diff
+                competitor -= 1
+                heapq.heappush(max_heap, -competitor)
+                mine += 1
+                answer += 1
             answers.append(answer)
         return answers
     except Exception:
