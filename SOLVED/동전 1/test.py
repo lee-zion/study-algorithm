@@ -15,31 +15,19 @@ def main(inputs):
     try:
         for input in inputs:
             """
-            nC1 + nC2 + ... + nCn =??
-            
-            1*10
-            
-            1*8+2*1
-            1*6+2*2
-            1*4+2*3
-            1*2+2*4
-            
-            1*5+5*1
-            
-            5*1+2*2+1*1
-            5*1+2*1+1*3
-            
-            2*5
-            5*2
-
-            dp[i][j] :== 총 i개의 동전?으로 가치 j를 만들 수 있는 경우의 수
+            dp[i] = dp[i] + dp[i - coin] for coin in coins
             """
             # your code here
             n, target = map(int, input[0].split())
-            values = []
+            coins = []
+            dp = [0] * (target + 1)
+            dp[0] = 1
             for i in range(n):
-                values.append(int(input[1+i]))
-            answer = 0
+                coins.append(int(input[1+i]))
+            for coin in coins:
+                for i in range(coin, target + 1):
+                    dp[i] += dp[i - coin]
+            answer = dp[target]
             answers.append(answer)
         return answers
     except Exception:
