@@ -8,3 +8,4 @@ NYPC/
 programmers/
 leetcode/
 .venv
+.DS_store
