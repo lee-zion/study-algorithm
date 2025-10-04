@@ -16,7 +16,7 @@ def main(inputs):
         for input in inputs:
             # your code here
             answer = True
-            answers.append(answer)
+            answers.append([str(answer)])
         return answers
     except Exception:
         print(f"===========================================================================")
@@ -32,7 +32,7 @@ class TestCases(unittest.TestCase):
         for i in range(1, example_num + 1):
             inputs.append(read_file(f"problem_title/input{i}.txt"))
             answers.append(read_file(f"problem_title/output{i}.txt"))
-        self.assertEqual([main(inputs)], answers)
+        self.assertEqual(main(inputs), answers)
 
 
 if __name__ == '__main__':
